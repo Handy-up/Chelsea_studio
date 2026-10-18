@@ -1,0 +1,12 @@
+<template x-if="group.inputType === 'multi_select'">
+    <div class="config-multi-options">
+        <template x-for="option in group.values" :key="option.id">
+            <label class="config-choice config-option config-extra-option">
+                <input type="checkbox" :name="'option_' + group.id" :value="option.id" :checked="(bookingSelection.selectedOptions[group.id] || []).includes(option.id)" @change="toggleOption(group, option.id)">
+                <span class="config-extra-label"><img x-show="option.imageUrl" :src="option.imageUrl" alt="" loading="lazy"><strong x-text="option.label"></strong><span class="config-description" x-text="option.description"></span></span>
+                <span class="config-adjustment" x-text="adjustmentLabel(option)"></span>
+            </label>
+        </template>
+        <p x-show="!group.values.length" class="config-description">Aucune option disponible pour le moment.</p>
+    </div>
+</template>

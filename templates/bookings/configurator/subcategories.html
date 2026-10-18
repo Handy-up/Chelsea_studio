@@ -1,0 +1,14 @@
+<section class="config-section" x-show="category && category.subcategories.length" x-transition.opacity aria-labelledby="style-heading">
+    <p class="config-eyebrow">03 · Style</p>
+    <h2 id="style-heading">Choisissez votre style</h2>
+    <div class="config-options-grid">
+        <template x-for="item in category?.subcategories || []" :key="item.id">
+            <button type="button" class="config-choice config-style" :class="bookingSelection.subcategoryId === item.id && 'is-selected'" :aria-pressed="bookingSelection.subcategoryId === item.id" @click="selectSubcategory(item.id)">
+                <img x-show="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy">
+                <span class="config-choice-title"><strong x-text="item.name"></strong><span x-show="bookingSelection.subcategoryId === item.id" aria-hidden="true">✓</span></span>
+                <span class="config-description" x-text="item.description"></span>
+                <span class="config-adjustment" x-text="adjustmentLabel(item)"></span>
+            </button>
+        </template>
+    </div>
+</section>

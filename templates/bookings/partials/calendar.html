@@ -1,0 +1,63 @@
+<div id="calendar-container" class="calendar">
+    {% if configuration_error %}<p class="field-error">{{ configuration_error }}</p>{% endif %}
+    <div class="calendar-header">
+        <span class="calendar-month-label">{{ calendar_month_label }}</span>
+        <div class="calendar-nav">
+            <button type="button" class="calendar-nav-btn" {% if not can_go_prev %}disabled{% endif %}
+                    hx-get="{% url 'bookings:disponibilites_mois' %}"
+                    hx-include="#booking-form input[name='configuration_token']"
+                    hx-vals='{"year": {{ prev_year }}, "month": {{ prev_month }}}'
+                    hx-target="#calendar-container"
+                    hx-swap="outerHTML"
+                    aria-label="Mois précédent">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button type="button" class="calendar-nav-btn" {% if not can_go_next %}disabled{% endif %}
+                    hx-get="{% url 'bookings:disponibilites_mois' %}"
+                    hx-include="#booking-form input[name='configuration_token']"
+                    hx-vals='{"year": {{ next_year }}, "month": {{ next_month }}}'
+                    hx-target="#calendar-container"
+                    hx-swap="outerHTML"
+                    aria-label="Mois suivant">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="calendar-weekdays">
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+    </div>
+
+    <div class="calendar-grid">
+        {% for week in calendar_weeks %}
+            {% for day in week %}
+                {% if day.in_month and not day.is_past and day.status == 'available' %}
+                    <button type="button"
+                            class="calendar-day is-available{% if day.is_today %} is-today{% endif %}"
+                            :class="selectedDate === '{{ day.date|date:"Y-m-d" }}' ? 'is-selected' : ''"
+                            hx-get="{% url 'bookings:disponibilites' %}"
+                            hx-include="#booking-form input[name='configuration_token']"
+                            hx-vals='{"date": "{{ day.date|date:"Y-m-d" }}"}'
+                            hx-target="#slots-container"
+                            hx-swap="outerHTML"
+                            @click="selectedDate = '{{ day.date|date:"Y-m-d" }}'; selectedSlot = ''; selectedSlotFormatted = ''; step = 3;"
+                            aria-label="{{ day.date|date:'l d F' }}, disponible">
+                        {{ day.day }}
+                        <span class="calendar-day-dot" aria-hidden="true"></span>
+                    </button>
+                {% else %}
+                    <span class="calendar-day{% if not day.in_month %} is-muted{% elif day.is_past %} is-disabled{% elif day.status == 'unavailable' %} is-unavailable{% endif %}{% if day.is_today %} is-today{% endif %}"
+                          aria-hidden="{% if day.in_month and not day.is_past %}false{% else %}true{% endif %}">
+                        {{ day.day }}
+                        {% if day.in_month and not day.is_past and day.status %}<span class="calendar-day-dot" aria-hidden="true"></span>{% endif %}
+                    </span>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="calendar-legend">
+        <span class="calendar-legend-item"><span class="calendar-legend-dot is-available"></span> Disponible</span>
+        <span class="calendar-legend-item"><span class="calendar-legend-dot is-unavailable"></span> Complet / fermé</span>
+    </div>
+</div>

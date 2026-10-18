@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Rendez-vous déplacé</title></head>
+<body style="font-family: sans-serif; color: #1A1918; background-color: #FDFBF7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #C87A56;">Votre rendez-vous a été déplacé</h2>
+        <p>Bonjour {{ customer.first_name }},</p>
+        <p>Votre rendez-vous pour <strong>{{ service.name }}</strong> a été reprogrammé.</p>
+        <p><strong>Nouvelle date :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+        {% if appointment.admin_note %}
+        <p><strong>Note de Chelsea :</strong> {{ appointment.admin_note }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

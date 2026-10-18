@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Rendez-vous confirmé</title></head>
+<body style="font-family: sans-serif; color: #1A1918; background-color: #FDFBF7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #2E7D32;">Bonne nouvelle {{ customer.first_name }} !</h2>
+        <p>Votre rendez-vous chez <strong>Chelsea Coiffure</strong> a été <strong>confirmé</strong>.</p>
+        <div style="background-color: #F8F5EE; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Service :</strong> {{ service.name }}</p>
+            <p><strong>Date & Heure :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+            <p><strong>Adresse :</strong> {{ site_settings.address }}</p>
+        </div>
+        <p>À très bientôt en salon !</p>
+    </div>
+</body>
+</html>

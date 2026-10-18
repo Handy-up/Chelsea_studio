@@ -1,0 +1,542 @@
+{
+  "currency": "CAD",
+  "clientTypes": [
+    {
+      "id": "demo-women",
+      "name": "Femmes",
+      "description": ""
+    },
+    {
+      "id": "demo-men",
+      "name": "Hommes",
+      "description": ""
+    }
+  ],
+  "categories": [
+    {
+      "id": "demo-hair",
+      "name": "Coiffure personnalisée",
+      "description": "Composez votre soin, du style aux finitions.",
+      "imageUrl": "/static/images/placeholders/service_default.svg",
+      "basePrice": "120",
+      "priceType": "fixed",
+      "baseDurationMinutes": 180,
+      "clientTypeIds": [],
+      "groups": [],
+      "subcategories": [
+        {
+          "id": "demo-signature",
+          "name": "Style signature",
+          "description": "Une finition soignée, adaptée à vos envies.",
+          "imageUrl": "",
+          "priceAdjustment": "0",
+          "durationAdjustmentMinutes": 0,
+          "groups": [
+            {
+              "id": "demo-size",
+              "name": "Taille",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "small",
+                  "label": "Petite",
+                  "value": "small",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0
+                },
+                {
+                  "id": "medium",
+                  "label": "Moyenne",
+                  "value": "medium",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "15",
+                  "durationAdjustmentMinutes": 30
+                },
+                {
+                  "id": "large",
+                  "label": "Grande",
+                  "value": "large",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "25",
+                  "durationAdjustmentMinutes": 45
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-length",
+              "name": "Longueur",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "shoulder",
+                  "label": "Épaule",
+                  "value": "shoulder",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0
+                },
+                {
+                  "id": "mid",
+                  "label": "Mi-dos",
+                  "value": "mid",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "30",
+                  "durationAdjustmentMinutes": 45
+                },
+                {
+                  "id": "long",
+                  "label": "Bas du dos",
+                  "value": "long",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "50",
+                  "durationAdjustmentMinutes": 60
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-color",
+              "name": "Couleur",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "c1",
+                  "label": "#1",
+                  "value": "c1",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#17120F"
+                  }
+                },
+                {
+                  "id": "c1b",
+                  "label": "#1B",
+                  "value": "c1b",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#29201C"
+                  }
+                },
+                {
+                  "id": "c2",
+                  "label": "#2",
+                  "value": "c2",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#513B2D"
+                  }
+                },
+                {
+                  "id": "c4",
+                  "label": "#4",
+                  "value": "c4",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#815638"
+                  }
+                }
+              ],
+              "metadata": {
+                "presentation": "color"
+              }
+            },
+            {
+              "id": "demo-extras",
+              "name": "Options additionnelles",
+              "description": "",
+              "inputType": "multi_select",
+              "required": false,
+              "values": [
+                {
+                  "id": "supply",
+                  "label": "Fourniture supplémentaire",
+                  "value": "supply",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "15",
+                  "durationAdjustmentMinutes": 15
+                },
+                {
+                  "id": "finish",
+                  "label": "Finition spéciale",
+                  "value": "finish",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "20",
+                  "durationAdjustmentMinutes": 30
+                },
+                {
+                  "id": "accessory",
+                  "label": "Accessoire",
+                  "value": "accessory",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "10",
+                  "durationAdjustmentMinutes": 15
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-own",
+              "name": "Apportez-vous vos propres mèches ?",
+              "description": "",
+              "inputType": "boolean",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            },
+            {
+              "id": "demo-photo",
+              "name": "Photo d’inspiration",
+              "description": "",
+              "inputType": "photo",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            },
+            {
+              "id": "demo-notes",
+              "name": "Notes pour la coiffeuse",
+              "description": "",
+              "inputType": "textarea",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            }
+          ]
+        },
+        {
+          "id": "demo-natural",
+          "name": "Style naturel",
+          "description": "Un résultat souple et tout en légèreté.",
+          "imageUrl": "",
+          "priceAdjustment": "0",
+          "durationAdjustmentMinutes": 0,
+          "groups": [
+            {
+              "id": "demo-size",
+              "name": "Taille",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "small",
+                  "label": "Petite",
+                  "value": "small",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0
+                },
+                {
+                  "id": "medium",
+                  "label": "Moyenne",
+                  "value": "medium",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "15",
+                  "durationAdjustmentMinutes": 30
+                },
+                {
+                  "id": "large",
+                  "label": "Grande",
+                  "value": "large",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "25",
+                  "durationAdjustmentMinutes": 45
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-length",
+              "name": "Longueur",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "shoulder",
+                  "label": "Épaule",
+                  "value": "shoulder",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0
+                },
+                {
+                  "id": "mid",
+                  "label": "Mi-dos",
+                  "value": "mid",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "30",
+                  "durationAdjustmentMinutes": 45
+                },
+                {
+                  "id": "long",
+                  "label": "Bas du dos",
+                  "value": "long",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "50",
+                  "durationAdjustmentMinutes": 60
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-color",
+              "name": "Couleur",
+              "description": "",
+              "inputType": "single_select",
+              "required": true,
+              "values": [
+                {
+                  "id": "c1",
+                  "label": "#1",
+                  "value": "c1",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#17120F"
+                  }
+                },
+                {
+                  "id": "c1b",
+                  "label": "#1B",
+                  "value": "c1b",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#29201C"
+                  }
+                },
+                {
+                  "id": "c2",
+                  "label": "#2",
+                  "value": "c2",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#513B2D"
+                  }
+                },
+                {
+                  "id": "c4",
+                  "label": "#4",
+                  "value": "c4",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "0",
+                  "durationAdjustmentMinutes": 0,
+                  "metadata": {
+                    "color": "#815638"
+                  }
+                }
+              ],
+              "metadata": {
+                "presentation": "color"
+              }
+            },
+            {
+              "id": "demo-extras",
+              "name": "Options additionnelles",
+              "description": "",
+              "inputType": "multi_select",
+              "required": false,
+              "values": [
+                {
+                  "id": "supply",
+                  "label": "Fourniture supplémentaire",
+                  "value": "supply",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "15",
+                  "durationAdjustmentMinutes": 15
+                },
+                {
+                  "id": "finish",
+                  "label": "Finition spéciale",
+                  "value": "finish",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "20",
+                  "durationAdjustmentMinutes": 30
+                },
+                {
+                  "id": "accessory",
+                  "label": "Accessoire",
+                  "value": "accessory",
+                  "description": "",
+                  "imageUrl": "",
+                  "priceAdjustment": "10",
+                  "durationAdjustmentMinutes": 15
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "demo-own",
+              "name": "Apportez-vous vos propres mèches ?",
+              "description": "",
+              "inputType": "boolean",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            },
+            {
+              "id": "demo-photo",
+              "name": "Photo d’inspiration",
+              "description": "",
+              "inputType": "photo",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            },
+            {
+              "id": "demo-notes",
+              "name": "Notes pour la coiffeuse",
+              "description": "",
+              "inputType": "textarea",
+              "required": false,
+              "values": [],
+              "metadata": {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "demo-direct",
+      "name": "Soin à personnaliser",
+      "description": "Un exemple sans style intermédiaire.",
+      "imageUrl": "/static/images/placeholders/service_default.svg",
+      "basePrice": "80",
+      "priceType": "fixed",
+      "baseDurationMinutes": 90,
+      "clientTypeIds": [],
+      "groups": [
+        {
+          "id": "demo-length",
+          "name": "Longueur",
+          "description": "",
+          "inputType": "single_select",
+          "required": true,
+          "values": [
+            {
+              "id": "shoulder",
+              "label": "Épaule",
+              "value": "shoulder",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "0",
+              "durationAdjustmentMinutes": 0
+            },
+            {
+              "id": "mid",
+              "label": "Mi-dos",
+              "value": "mid",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "30",
+              "durationAdjustmentMinutes": 45
+            },
+            {
+              "id": "long",
+              "label": "Bas du dos",
+              "value": "long",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "50",
+              "durationAdjustmentMinutes": 60
+            }
+          ],
+          "metadata": {}
+        },
+        {
+          "id": "demo-extras",
+          "name": "Options additionnelles",
+          "description": "",
+          "inputType": "multi_select",
+          "required": false,
+          "values": [
+            {
+              "id": "supply",
+              "label": "Fourniture supplémentaire",
+              "value": "supply",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "15",
+              "durationAdjustmentMinutes": 15
+            },
+            {
+              "id": "finish",
+              "label": "Finition spéciale",
+              "value": "finish",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "20",
+              "durationAdjustmentMinutes": 30
+            },
+            {
+              "id": "accessory",
+              "label": "Accessoire",
+              "value": "accessory",
+              "description": "",
+              "imageUrl": "",
+              "priceAdjustment": "10",
+              "durationAdjustmentMinutes": 15
+            }
+          ],
+          "metadata": {}
+        },
+        {
+          "id": "demo-photo",
+          "name": "Photo d’inspiration",
+          "description": "",
+          "inputType": "photo",
+          "required": false,
+          "values": [],
+          "metadata": {}
+        }
+      ],
+      "subcategories": []
+    }
+  ]
+}

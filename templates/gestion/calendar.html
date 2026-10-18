@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Calendrier" "Vue d'ensemble des journées ouvertes et des rendez-vous." %}
+
+    {% include 'gestion/partials/calendar.html' %}
+</div>
+{% endblock %}

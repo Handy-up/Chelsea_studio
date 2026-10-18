@@ -1,0 +1,8 @@
+{% if appointment.configuration %}
+<div class="selection-summary">
+    <p><strong>Pour qui :</strong> {{ appointment.configuration.clientTypeName }}</p>
+    {% if appointment.configuration.subcategoryName %}<p><strong>Style :</strong> {{ appointment.configuration.subcategoryName }}</p>{% endif %}
+    {% for option in appointment.configuration.options %}<p><strong>{{ option.group }} :</strong> {{ option.value }}</p>{% endfor %}
+    <p><strong>Durée du soin :</strong> {{ appointment.configured_duration_minutes }} min</p>
+</div>
+{% endif %}

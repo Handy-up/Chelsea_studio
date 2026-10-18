@@ -1,0 +1,19 @@
+Bonjour {{ customer.first_name }},
+
+Nous avons bien reçu votre demande de rendez-vous pour le service {{ service.name }} chez Chelsea Coiffure.
+
+Détails :
+- Date & Heure : {{ appointment.starts_at|date:"l d F Y à H:i" }}
+- Durée : {{ appointment.configured_duration_minutes }} min
+- Prix : {{ appointment.quoted_price }} €
+- Statut : En attente de confirmation
+
+Chelsea validera votre demande dans les plus brefs délais.
+
+Chelsea Coiffure
+
+{% if appointment.configuration %}
+Pour qui : {{ appointment.configuration.clientTypeName }}
+{% if appointment.configuration.subcategoryName %}Style : {{ appointment.configuration.subcategoryName }}{% endif %}
+{% for option in appointment.configuration.options %}{{ option.group }} : {{ option.value }}
+{% endfor %}{% endif %}

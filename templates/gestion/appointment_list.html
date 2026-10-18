@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Rendez-vous" %}
+
+    <div class="filter-tabs">
+        <a href="{% url 'accounts:gestion_appointments' %}" class="filter-tab {% if current_status == 'all' %}active{% endif %}">Tous</a>
+        <a href="?status=pending" class="filter-tab {% if current_status == 'pending' %}active{% endif %}">À confirmer</a>
+        <a href="?status=confirmed" class="filter-tab {% if current_status == 'confirmed' %}active{% endif %}">Confirmés</a>
+        <a href="?status=completed" class="filter-tab {% if current_status == 'completed' %}active{% endif %}">Terminés</a>
+    </div>
+
+    <section class="card">
+        {% for row in appointment_rows %}
+            {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+        {% empty %}
+            {% empty_state "Aucun rendez-vous dans cette vue." %}
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

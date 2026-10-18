@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+
+    {% page_header "Galerie & Réalisations" "Inspiration et exemples de coupes réalisées par Chelsea" %}
+
+    <!-- Filter Tabs (HTMX enabled) -->
+    <div class="filter-tabs" role="tablist" aria-label="Filtrer la galerie">
+        <a href="{% url 'gallery:list' %}"
+           class="filter-tab {% if current_audience == 'all' %}active{% endif %}"
+           hx-get="{% url 'gallery:list' %}"
+           hx-target="#gallery-grid-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'all' %}true{% else %}false{% endif %}">
+            Toutes les créations
+        </a>
+        <a href="{% url 'gallery:list' %}?audience=women"
+           class="filter-tab {% if current_audience == 'women' %}active{% endif %}"
+           hx-get="{% url 'gallery:list' %}?audience=women"
+           hx-target="#gallery-grid-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'women' %}true{% else %}false{% endif %}">
+            Femmes
+        </a>
+        <a href="{% url 'gallery:list' %}?audience=men"
+           class="filter-tab {% if current_audience == 'men' %}active{% endif %}"
+           hx-get="{% url 'gallery:list' %}?audience=men"
+           hx-target="#gallery-grid-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'men' %}true{% else %}false{% endif %}">
+            Hommes
+        </a>
+    </div>
+
+    {% include 'gallery/partials/gallery_grid.html' %}
+
+</div>
+{% endblock %}

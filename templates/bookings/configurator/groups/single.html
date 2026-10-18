@@ -1,0 +1,20 @@
+<template x-if="group.inputType === 'single_select'">
+    <div>
+        <div class="config-single-options" :class="group.metadata?.presentation === 'color' && 'config-color-options'">
+            <template x-for="option in group.values" :key="option.id">
+                <label class="config-pill-option">
+                    <input type="radio" :name="'option_' + group.id" :value="option.id" :checked="bookingSelection.selectedOptions[group.id] === option.id" @change="selectOption(group, option.id)">
+                    <span class="config-pill-content">
+                        <img x-show="option.imageUrl" :src="option.imageUrl" alt="" loading="lazy">
+                        {% include 'bookings/configurator/groups/color.html' %}
+                        <strong><span x-text="option.label"></span><span class="config-option-check" aria-hidden="true" x-show="bookingSelection.selectedOptions[group.id] === option.id">✓</span></strong>
+                        <span class="config-description" x-show="option.description" x-text="option.description"></span>
+                        <span class="config-adjustment" x-show="adjustmentLabel(option)" x-text="adjustmentLabel(option)"></span>
+                    </span>
+                </label>
+            </template>
+        </div>
+        <p x-show="!group.values.length" class="config-description">Aucun choix disponible pour le moment.</p>
+        <button type="button" class="config-text-button" x-show="!group.required && bookingSelection.selectedOptions[group.id]" @click="selectOption(group, null)">Effacer ce choix</button>
+    </div>
+</template>

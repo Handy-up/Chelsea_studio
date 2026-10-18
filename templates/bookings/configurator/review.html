@@ -1,0 +1,15 @@
+<section class="card config-review" x-show="review" x-transition.opacity>
+    <div x-show="previewValidated" class="config-preview-notice" tabindex="-1" x-ref="previewNotice" role="status"><strong>Votre aperçu est prêt.</strong><p>La personnalisation s’arrête ici pour validation visuelle. Le calendrier réel reste disponible dans le parcours habituel.</p><a href="{% url 'bookings:wizard' %}">Ouvrir la réservation réelle →</a></div>
+    <p class="config-eyebrow">Tout est prêt</p>
+    <h2 tabindex="-1" x-ref="reviewHeading">Votre sélection</h2>
+    <p class="config-description">Vérifiez votre soin avant de choisir le moment qui vous convient.</p>
+    <dl class="config-review-list">
+        <div><dt>Pour qui</dt><dd x-text="catalogue.clientTypes.find(t => t.id === bookingSelection.clientTypeId)?.name"></dd></div>
+        <div><dt>Coiffure</dt><dd x-text="category?.name"></dd></div>
+        <div x-show="style"><dt>Style</dt><dd x-text="style?.name"></dd></div>
+        <template x-for="group in chosenGroups" :key="group.id"><div><dt x-text="group.name"></dt><dd x-text="optionLabel(group)"></dd></div></template>
+        <div><dt>Durée estimée</dt><dd x-text="duration(selectedServiceDuration)"></dd></div>
+        <div><dt>Prix estimé</dt><dd class="config-price" x-text="selectedServicePrice"></dd></div>
+    </dl>
+    <button type="button" class="btn btn-outline" @click="review = false">Modifier mon soin</button>
+</section>

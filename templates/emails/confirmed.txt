@@ -1,0 +1,7 @@
+Bonjour {{ customer.first_name }},
+
+Votre rendez-vous pour le service {{ service.name }} le {{ appointment.starts_at|date:"l d F Y à H:i" }} est officiellement CONFIRMÉ par Chelsea !
+
+Adresse du salon : {{ site_settings.address }}
+
+À très bientôt !

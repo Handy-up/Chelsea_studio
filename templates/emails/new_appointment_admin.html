@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Nouvelle demande de RDV</title></head>
+<body style="font-family: sans-serif; color: #1A1918; background-color: #FDFBF7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #C87A56;">Nouveau rendez-vous à valider !</h2>
+        <p>Un client vient de faire une demande de réservation :</p>
+        <ul>
+            <li><strong>Client :</strong> {{ customer.full_name }} ({{ customer.phone }} - {{ customer.email }})</li>
+            <li><strong>Service :</strong> {{ service.name }}</li>
+            <li><strong>Date :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</li>
+            <li><strong>Durée :</strong> {{ appointment.configured_duration_minutes }} min</li>
+            <li><strong>Prix :</strong> {{ appointment.quoted_price }} €</li>
+            {% if appointment.client_note %}
+            <li><strong>Note client :</strong> {{ appointment.client_note }}</li>
+            {% endif %}
+        </ul>
+        <p><a href="{{ site_url }}/gestion/rendez-vous/{{ appointment.public_id }}/" style="display: inline-block; background-color: #C87A56; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Accéder à la gestion du RDV</a></p>
+    </div>
+{% include 'bookings/partials/configuration_details.html' %}
+</body>
+</html>

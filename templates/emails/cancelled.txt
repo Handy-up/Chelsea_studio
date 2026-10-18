@@ -1,0 +1,5 @@
+Bonjour {{ customer.first_name }},
+
+Votre rendez-vous du {{ appointment.starts_at|date:"l d F Y à H:i" }} est bien annulé.
+
+Chelsea Coiffure

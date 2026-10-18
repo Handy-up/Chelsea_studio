@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Demande de rendez-vous reçue</title>
+</head>
+<body style="font-family: sans-serif; color: #1A1918; background-color: #FDFBF7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #C87A56; margin-top: 0;">Bonjour {{ customer.first_name }},</h2>
+        <p>Nous avons bien reçu votre demande de rendez-vous pour le service <strong>{{ service.name }}</strong> chez <strong>Chelsea Coiffure</strong>.</p>
+        <div style="background-color: #F8F5EE; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 5px 0;"><strong>Date & Heure :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+            <p style="margin: 5px 0;"><strong>Durée :</strong> {{ appointment.configured_duration_minutes }} min</p>
+            <p style="margin: 5px 0;"><strong>Prix estimé :</strong> {{ appointment.quoted_price }} €</p>
+            <p style="margin: 5px 0;"><strong>Statut :</strong> En attente de confirmation par Chelsea</p>
+        </div>
+        {% if service.client_must_bring %}
+        <p><strong>À apporter :</strong> {{ service.client_must_bring }}</p>
+        {% endif %}
+        {% if service.preparation_instructions %}
+        <p><strong>Instructions de préparation :</strong> {{ service.preparation_instructions }}</p>
+        {% endif %}
+        <p>Chelsea étudie votre demande et vous répondra très rapidement.</p>
+        <hr style="border: 0; border-top: 1px solid #EAE5D9; margin: 20px 0;">
+        <p style="font-size: 12px; color: #777;">Chelsea Coiffure - {{ site_settings.address }}</p>
+    </div>
+{% include 'bookings/partials/configuration_details.html' %}
+</body>
+</html>

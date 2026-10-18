@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Profil public" "Les informations affichées sur le site public de Chelsea." %}
+
+    <form method="post" class="card">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label" for="owner_name">Nom affiché</label>
+            <input class="form-input" id="owner_name" name="owner_name" value="{{ site_settings.owner_name }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="business_name">Nom de l'entreprise</label>
+            <input class="form-input" id="business_name" name="business_name" value="{{ site_settings.business_name }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="phone">Téléphone</label>
+            <input class="form-input" id="phone" name="phone" value="{{ site_settings.phone }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="email">Courriel</label>
+            <input class="form-input" type="email" id="email" name="email" value="{{ site_settings.email }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="address">Adresse</label>
+            <textarea class="form-textarea" id="address" name="address" rows="2">{{ site_settings.address }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="short_bio">Bio courte</label>
+            <textarea class="form-textarea" id="short_bio" name="short_bio" rows="4">{{ site_settings.short_bio }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="booking_notice">Instructions de réservation</label>
+            <textarea class="form-textarea" id="booking_notice" name="booking_notice" rows="3">{{ site_settings.booking_notice }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="cancellation_policy">Politique d'annulation</label>
+            <textarea class="form-textarea" id="cancellation_policy" name="cancellation_policy" rows="3">{{ site_settings.cancellation_policy }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="instagram_url">Instagram</label>
+            <input class="form-input" type="url" id="instagram_url" name="instagram_url" value="{{ site_settings.instagram_url }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="tiktok_url">TikTok</label>
+            <input class="form-input" type="url" id="tiktok_url" name="tiktok_url" value="{{ site_settings.tiktok_url }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="whatsapp_url">WhatsApp</label>
+            <input class="form-input" type="url" id="whatsapp_url" name="whatsapp_url" value="{{ site_settings.whatsapp_url }}">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Enregistrer le profil</button>
+    </form>
+</div>
+{% endblock %}

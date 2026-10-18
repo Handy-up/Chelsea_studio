@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{% if meta_title %}{{ meta_title }}{% else %}{{ site_settings.business_name|default:"Chelsea Coiffure" }}{% endif %}</title>
+    
+    <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{{ site_settings.short_bio }}{% endif %}">
+    <meta name="theme-color" content="#FDFBF7">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% if meta_title %}{{ meta_title }}{% else %}{{ site_settings.business_name }}{% endif %}">
+    <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}{{ site_settings.short_bio }}{% endif %}">
+    <meta property="og:image" content="{% if site_settings.profile_photo %}{{ site_settings.profile_photo.url }}{% else %}{% static 'images/placeholders/profile_default.svg' %}{% endif %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/placeholders/profile_default.svg' %}" type="image/svg+xml">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles System -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- Scripts HTMX & Alpine.js -->
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    <script src="{% static 'js/alpine.min.js' %}" defer></script>
+
+    <!-- Schema.org LocalBusiness Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HairSalon",
+      "name": "{{ site_settings.business_name|default:'Chelsea Coiffure' }}",
+      "image": "{% if site_settings.profile_photo %}{{ site_settings.profile_photo.url }}{% else %}{% static 'images/placeholders/profile_default.svg' %}{% endif %}",
+      "telephone": "{{ site_settings.phone }}",
+      "email": "{{ site_settings.email }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ site_settings.address }}",
+        "addressLocality": "{{ site_settings.city }}"
+      },
+      "priceRange": "€€"
+    }
+    </script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Header / Brand Bar -->
+    <header class="app-header">
+        <div class="header-content">
+            <a href="{% url 'core:home' %}" class="brand-logo">
+                {{ site_settings.owner_name|default:"Chelsea" }} <span class="brand-tagline">Coiffure</span>
+            </a>
+            <nav class="header-nav">
+                <a href="{% url 'services:list' %}" class="header-nav-link">Services</a>
+                <a href="{% url 'bookings:wizard' %}" class="btn btn-primary btn-remove">Réserver</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="app-main">
+        {% if messages %}
+            <div class="container messages-container">
+                {% for message in messages %}
+                    <div class="app-message {% if message.tags == 'error' %}app-message-error{% else %}app-message-success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container">
+            <h3 class="footer-brand">{{ site_settings.business_name|default:"Chelsea Coiffure" }}</h3>
+            <p class="footer-address">{{ site_settings.address }}</p>
+            <div class="footer-links">
+                <a href="{% url 'core:home' %}">Accueil</a>
+                <a href="{% url 'services:list' %}">Prestations</a>
+                <a href="{% url 'gallery:list' %}">Galerie</a>
+                <a href="{% url 'bookings:wizard' %}">Réserver</a>
+                <a href="{% url 'core:privacy' %}">Confidentialité</a>
+                <a href="{% url 'core:cancellation' %}">Annulation</a>
+                <a href="{% url 'core:terms' %}">Conditions</a>
+            </div>
+            <p class="footer-copyright">&copy; {% now "Y" %} {{ site_settings.owner_name }}. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

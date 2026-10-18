@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load chelsea_ui static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/configurator.css' %}">
+<script src="{% static 'js/booking/engine.js' %}"></script>
+<script src="{% static 'js/booking/configurator.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<noscript><p class="container">Activez JavaScript pour personnaliser votre soin et réserver.</p></noscript>
+{{ configurator_initial|json_script:"configurator-initial" }}
+<div class="container booking-configurator" x-data="serviceConfigurator" x-cloak @htmx:response-error.window="error = 'Le calendrier n’a pas pu être chargé. Revenez au soin pour vérifier votre sélection et réessayer.'" @htmx:send-error.window="error = 'Connexion interrompue. Réessayez après avoir vérifié votre connexion.'"
+     data-preview="{% if personalization_preview %}true{% else %}false{% endif %}"
+     data-catalogue-url="{% if personalization_preview %}{% static 'js/booking/mocks/personalization.json' %}{% else %}{% url 'bookings:catalogue' %}{% endif %}"
+     data-configure-url="{% url 'bookings:configure' %}"
+     data-calendar-url="{% url 'bookings:disponibilites_mois' %}">
+    {% page_header "Réserver un Rendez-vous" "Réservez en 4 étapes simples sans attente" %}
+
+    {% if personalization_preview %}
+    <div class="config-preview-notice"><strong>Aperçu de la personnalisation</strong><p>Exemples temporaires · tarifs fictifs en dollars. Aucune réservation ne sera enregistrée.</p><a href="{% url 'bookings:wizard' %}">Retour à la réservation</a></div>
+    {% elif show_personalization_preview_link %}
+    <p class="config-preview-link"><a href="?apercu=personnalisation">Découvrir l’aperçu de la personnalisation →</a></p>
+    {% endif %}
+    <!-- Step Progress Indicator -->
+    <div class="booking-progress">
+        <div class="booking-progress-track"></div>
+        <div class="booking-progress-fill" :style="'width: ' + ((step - 1) / 3 * 100) + '%'"></div>
+
+        <div class="booking-progress-step" :aria-current="step === 1 ? 'step' : null">
+            <div class="booking-progress-dot" :class="step >= 1 ? 'is-active' : ''">1</div>
+            <span>Soin</span>
+        </div>
+        <div class="booking-progress-step" :aria-current="step === 2 ? 'step' : null">
+            <div class="booking-progress-dot" :class="step >= 2 ? 'is-active' : ''">2</div>
+            <span>Date</span>
+        </div>
+        <div class="booking-progress-step" :aria-current="step === 3 ? 'step' : null">
+            <div class="booking-progress-dot" :class="step >= 3 ? 'is-active' : ''">3</div>
+            <span>Heure</span>
+        </div>
+        <div class="booking-progress-step" :aria-current="step === 4 ? 'step' : null">
+            <div class="booking-progress-dot" :class="step >= 4 ? 'is-active' : ''">4</div>
+            <span>Infos</span>
+        </div>
+    </div>
+
+    <!-- Booking Form -->
+    <form method="post" action="{% url 'bookings:wizard' %}" id="booking-form" enctype="multipart/form-data" @submit="handleSubmit($event)">
+        {% csrf_token %}
+        {{ form.website_hp }}
+
+        <div class="config-error" role="alert" x-show="error">
+            <p x-text="error"></p>
+            <button type="button" class="btn btn-outline btn-sm" @click="refreshCatalogue()">Actualiser les choix</button>
+        </div>
+        <input type="hidden" name="configuration_token" :value="configurationToken">
+        <!-- Hidden Inputs for Form Submission -->
+        <input type="hidden" name="service_id" :value="selectedServiceId">
+        <input type="hidden" name="date" :value="selectedDate">
+        <input type="hidden" name="slot" :value="selectedSlot">
+        <input type="hidden" name="booking_nonce" value="{{ booking_nonce }}">
+        <input type="hidden" name="action" value="submit_booking">
+
+        {% include 'bookings/configurator/main.html' %}
+
+        <!-- ÉTAPE 2 : Choix de la Date -->
+        <div x-show="step === 2" class="card">
+            <div class="card-header-row">
+                <h2 class="card-section-title" tabindex="-1" x-ref="dateHeading">2. Choisissez une date</h2>
+                <button type="button" class="btn btn-outline btn-sm" @click="editService()">← Modifier service</button>
+            </div>
+
+            <div class="selection-summary">
+                Soin sélectionné : <strong x-text="selectedServiceName"></strong> (<span x-text="selectedServiceDuration"></span> min - <span x-text="selectedServicePrice"></span>)
+            </div>
+
+            {% include 'bookings/partials/calendar.html' %}
+        </div>
+
+        <!-- ÉTAPE 3 : Choix du Créneau Horaire -->
+        <div x-show="step === 3" class="card">
+            <div class="card-header-row">
+                <h2 class="card-section-title">3. Choisissez un créneau</h2>
+                <button type="button" class="btn btn-outline btn-sm" @click="step = 2">← Modifier date</button>
+            </div>
+
+            <div class="selection-summary">
+                Date : <strong x-text="selectedDate"></strong>
+            </div>
+
+            {% include 'bookings/partials/slots_list.html' %}
+
+            <div class="step-continue" x-show="selectedSlot">
+                <button type="button" class="btn btn-primary btn-block" @click="step = 4">Continuer vers vos coordonnées ➔</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 4 : Formulaire Coordonnées & Confirmation -->
+        <div x-show="step === 4" class="card">
+            <div class="card-header-row">
+                <h2 class="card-section-title">4. Vos coordonnées</h2>
+                <button type="button" class="btn btn-outline btn-sm" @click="step = 3">← Modifier heure</button>
+            </div>
+
+            <div class="config-compact-options">
+                <template x-for="group in groups" :key="group.id"><p><strong x-text="group.name + ' : '"></strong><span x-text="optionLabel(group)"></span></p></template>
+            </div>
+            <!-- Récapitulatif -->
+            <div class="booking-summary-card">
+                <h3>Récapitulatif du rendez-vous</h3>
+                <p><strong>Service :</strong> <span x-text="selectedServiceName"></span></p>
+                <p><strong>Date &amp; Heure :</strong> <span x-text="selectedDate"></span> à <span x-text="selectedSlotFormatted || 'l\'heure choisie'"></span></p>
+                <p><strong>Tarif estimé :</strong> <span x-text="selectedServicePrice"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}<div class="field-error">{{ form.first_name.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}<div class="field-error">{{ form.last_name.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}<div class="field-error">{{ form.email.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}<div class="field-error">{{ form.phone.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.client_note.id_for_label }}">{{ form.client_note.label }}</label>
+                {{ form.client_note }}
+            </div>
+
+            <div class="form-group form-group-checkbox">
+                {{ form.accept_policy }}
+                <label for="{{ form.accept_policy.id_for_label }}" class="text-muted-sm">
+                    J'accepte la <a href="{% url 'core:cancellation' %}" target="_blank" class="link-underline">politique d'annulation</a> et les conditions de réservation.
+                </label>
+            </div>
+            {% if form.accept_policy.errors %}<div class="field-error mb-1">{{ form.accept_policy.errors.0 }}</div>{% endif %}
+
+            <button :disabled="!configurationToken || !selectedSlot" type="submit" class="btn btn-primary btn-block btn-lg">
+                Confirmer la demande de rendez-vous ✨
+            </button>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

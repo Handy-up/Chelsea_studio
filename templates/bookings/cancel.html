@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center">
+
+    <h1 class="cancel-title">Annulation de Rendez-vous</h1>
+
+    <div class="card cancel-card">
+        <p>Êtes-vous sûr(e) de vouloir annuler le rendez-vous suivant ?</p>
+        <div class="cancel-summary">
+            <p><strong>Service :</strong> {{ appointment.service.name }}</p>
+            <p><strong>Date &amp; Heure :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-block">
+                Confirmer l'annulation du rendez-vous
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+            <template x-if="['text', 'number'].includes(group.inputType)">
+                <input class="form-input" :type="group.inputType === 'number' ? 'number' : 'text'" :aria-label="group.name" :aria-required="group.required" maxlength="2000" :step="group.inputType === 'number' ? 'any' : null" :value="bookingSelection.selectedOptions[group.id] ?? ''" @input="selectOption(group, group.inputType === 'number' ? ($event.target.value === '' ? null : Number($event.target.value)) : $event.target.value)">
+            </template>
+            <template x-if="group.inputType === 'textarea'">
+                <textarea class="form-input" :aria-label="group.name" :aria-required="group.required" maxlength="2000" rows="3" :value="bookingSelection.selectedOptions[group.id] || ''" @input="selectOption(group, $event.target.value)"></textarea>
+            </template>

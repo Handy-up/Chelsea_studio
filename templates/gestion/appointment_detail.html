@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    <a href="{% url 'accounts:gestion_appointments' %}" class="back-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Retour aux rendez-vous
+    </a>
+
+    <section class="card">
+        {% status_badge appointment.status appointment.get_status_display %}
+        <h1 class="appointment-detail-title">{{ appointment.customer.full_name }}</h1>
+        <p class="text-muted-sm">{{ appointment.service.name }} · {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+
+        <div class="appointment-detail-facts">
+            <p><strong>Courriel :</strong> <a href="mailto:{{ appointment.customer.email }}">{{ appointment.customer.email }}</a></p>
+            <p><strong>Téléphone :</strong> <a href="tel:{{ appointment.customer.phone }}">{{ appointment.customer.phone }}</a></p>
+            <p><strong>Prix :</strong> {{ appointment.quoted_price }} €</p>
+            <p><strong>Référence :</strong> <span class="mono">{{ appointment.public_id }}</span></p>
+        </div>
+
+        {% include 'bookings/partials/configuration_details.html' %}
+        {% for attachment in appointment.attachments.all %}
+            <p><a class="link-underline" href="{% url 'bookings:attachment' attachment.pk %}">Télécharger : {{ attachment.name }}</a></p>
+        {% endfor %}
+        {% if appointment.client_note %}
+            <h2 class="card-section-title">Note cliente</h2>
+            <p class="preserve-lines">{{ appointment.client_note }}</p>
+        {% endif %}
+    </section>
+
+    <form method="post" class="card">
+        {% csrf_token %}
+        <label class="form-label" for="admin_note">Note interne</label>
+        <textarea class="form-textarea" id="admin_note" name="admin_note" rows="4">{{ appointment.admin_note }}</textarea>
+
+        <div class="button-row mt-1">
+            <button class="btn btn-outline" type="submit" name="action" value="update_note">Enregistrer note</button>
+            {% if appointment.status == 'pending' %}
+                <button class="btn btn-primary" type="submit" name="action" value="confirm">Confirmer</button>
+                <button class="btn btn-danger" type="submit" name="action" value="decline">Refuser</button>
+            {% endif %}
+            {% if appointment.status == 'confirmed' %}
+                <button class="btn btn-primary" type="submit" name="action" value="complete">Terminer</button>
+                <button class="btn btn-outline" type="submit" name="action" value="no_show">Absent</button>
+                <button class="btn btn-danger" type="submit" name="action" value="cancel_admin">Annuler</button>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

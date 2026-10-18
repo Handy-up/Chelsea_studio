@@ -1,0 +1,25 @@
+{% load chelsea_ui %}
+<div id="service-list-container">
+    {% for service in services %}
+        <div class="service-card fade-in-up">
+            <div class="service-img-wrapper">
+                <img src="{{ service.get_cover_image_url }}" alt="{{ service.name }}" loading="lazy">
+            </div>
+            <div class="service-card-body">
+                <span class="service-category">{{ service.category.get_audience_display|default:"Unisex" }}</span>
+                <h3 class="card-title">{{ service.name }}</h3>
+                <p class="service-short-description">{{ service.short_description }}</p>
+                <div class="service-price-duration">
+                    <div class="service-price">{% if service.price_type == 'starting_at' %}<span class="service-price-label">À partir de</span>{% endif %}{% if service.price_type == 'consultation_required' %}Sur devis{% else %}{{ service.price|floatformat:"2g" }}&nbsp;€{% endif %}</div>
+                    <span class="service-duration"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ service.duration_minutes }} min</span>
+                </div>
+                <div class="service-card-actions">
+                    <a href="{% url 'bookings:wizard' %}?service={{ service.pk }}" class="btn service-book-button" aria-label="Réserver : {{ service.name }}">Réserver ce soin <span aria-hidden="true">↗</span></a>
+                    <a href="{% url 'services:detail' service.slug %}" class="service-details-link" aria-label="Voir les détails : {{ service.name }}">Voir les détails</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        {% empty_state "Aucun service disponible pour cette catégorie." card=True %}
+    {% endfor %}
+</div>

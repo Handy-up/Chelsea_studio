@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Tableau de bord" "Vue rapide de la journée et des demandes à traiter." %}
+
+    <div class="metric-grid">
+        {% metric_card "Aujourd'hui" today_count %}
+        {% metric_card "À confirmer" pending_count %}
+        {% metric_card "Confirmés" confirmed_count %}
+        {% metric_card "Mois estimé" monthly_revenue_display %}
+    </div>
+
+    <section class="card">
+        <h2 class="card-section-title">Demandes à confirmer</h2>
+        {% for row in pending_rows %}
+            {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+        {% empty %}
+            {% empty_state "Aucune demande en attente." %}
+        {% endfor %}
+    </section>
+
+    <section class="card">
+        <h2 class="card-section-title">Rendez-vous du jour</h2>
+        {% for row in today_rows %}
+            {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+        {% empty %}
+            {% empty_state "Aucun rendez-vous prévu aujourd'hui." %}
+        {% endfor %}
+    </section>
+
+    <div class="button-row dashboard-actions">
+        <a href="{% url 'accounts:gestion_appointments' %}" class="btn btn-primary">Voir tous les RDV</a>
+        <a href="{% url 'accounts:gestion_blocks' %}" class="btn btn-outline">Bloquer une période</a>
+        <a href="{% url 'accounts:gestion_hours' %}" class="btn btn-outline">Horaires</a>
+    </div>
+
+    <section class="card">
+        <h2 class="card-section-title">Prochains confirmés</h2>
+        {% for row in confirmed_rows %}
+            {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+        {% empty %}
+            {% empty_state "Aucun rendez-vous confirmé à venir." %}
+        {% endfor %}
+    </section>
+
+    {% if cancellation_rows %}
+        <section class="card">
+            <h2 class="card-section-title">Annulations &amp; refus récents</h2>
+            {% for row in cancellation_rows %}
+                {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+            {% endfor %}
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

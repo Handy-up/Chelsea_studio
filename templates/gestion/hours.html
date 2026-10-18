@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Horaires" "Définissez les jours et heures d'ouverture du salon." %}
+
+    <form method="post" class="card">
+        {% csrf_token %}
+        {% for bh in hours %}
+            <div class="hours-edit-row">
+                <strong>{{ bh.get_weekday_display }}</strong>
+                <label class="hours-closed-toggle">
+                    <input type="checkbox" name="closed_{{ bh.id }}" {% if bh.is_closed %}checked{% endif %}>
+                    Fermé
+                </label>
+                <div class="hours-edit-grid">
+                    <div>
+                        <label class="form-label" for="opening_{{ bh.id }}">Ouverture</label>
+                        <input class="form-input" type="time" id="opening_{{ bh.id }}" name="opening_{{ bh.id }}" value="{{ bh.opening_time|time:'H:i' }}">
+                    </div>
+                    <div>
+                        <label class="form-label" for="closing_{{ bh.id }}">Fermeture</label>
+                        <input class="form-input" type="time" id="closing_{{ bh.id }}" name="closing_{{ bh.id }}" value="{{ bh.closing_time|time:'H:i' }}">
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            {% empty_state "Aucun horaire configuré." %}
+        {% endfor %}
+        <button class="btn btn-primary btn-block mt-1" type="submit">Enregistrer les horaires</button>
+    </form>
+</div>
+{% endblock %}

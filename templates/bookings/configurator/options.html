@@ -1,0 +1,8 @@
+<section class="config-section" x-show="category && (!category.subcategories.length || style) && groups.length" x-transition.opacity aria-labelledby="options-heading">
+    <p class="config-eyebrow">04 · Personnalisation</p>
+    <h2 id="options-heading">Personnalisez votre coiffure</h2>
+    <p class="config-description">Choisissez les options qui correspondent au résultat souhaité.</p>
+    <template x-for="group in groups" :key="group.id">
+        {% include 'bookings/configurator/groups/renderer.html' %}
+    </template>
+</section>

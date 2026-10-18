@@ -1,0 +1,5 @@
+Bonjour {{ customer.first_name }},
+
+Votre rendez-vous pour {{ service.name }} a été déplacé au {{ appointment.starts_at|date:"l d F Y à H:i" }}.
+
+Chelsea Coiffure

@@ -1,0 +1,8 @@
+Bonjour {{ customer.first_name }},
+
+Rappel de votre rendez-vous chez Chelsea Coiffure :
+- Service : {{ service.name }}
+- Date : {{ appointment.starts_at|date:"l d F Y à H:i" }}
+- Adresse : {{ site_settings.address }}
+
+À très bientôt !

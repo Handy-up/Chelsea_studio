@@ -1,0 +1,13 @@
+<div x-show="step === 1" class="config-layout">
+    <div class="config-main">
+        <div x-show="loading" class="card config-skeleton" role="status" aria-label="Chargement des coiffures"><span></span><span></span><span></span></div>
+        <div x-show="!loading && !review" class="card config-panel">
+            {% include 'bookings/configurator/client_types.html' %}
+            {% include 'bookings/configurator/categories.html' %}
+            {% include 'bookings/configurator/subcategories.html' %}
+            {% include 'bookings/configurator/options.html' %}
+        </div>
+        {% include 'bookings/configurator/review.html' %}
+    </div>
+    {% include 'bookings/configurator/summary.html' %}
+</div>

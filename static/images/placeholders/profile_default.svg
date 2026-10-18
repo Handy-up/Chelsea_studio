@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="300" height="300" fill="#F0DED5"/>
+  <circle cx="150" cy="120" r="50" fill="#C87A56"/>
+  <path d="M70,250 C70,190 110,180 150,180 C190,180 230,190 230,250 Z" fill="#C87A56"/>
+  <text x="150" y="280" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1A1918" text-anchor="middle">Chelsea Coiffure</text>
+</svg>

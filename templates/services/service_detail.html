@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container service-detail-shell">
+
+    <a href="{% url 'services:list' %}" class="back-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Retour aux services
+    </a>
+
+    <div class="service-detail-hero">
+        <img src="{{ service.get_cover_image_url }}" alt="{{ service.name }}" loading="lazy">
+    </div>
+
+    <h1 class="service-detail-title">{{ service.name }}</h1>
+
+    <div class="service-detail-facts">
+        <div>
+            <span class="service-detail-fact-label">Prix</span>
+            <strong class="service-detail-price">{{ service.formatted_price }}</strong>
+        </div>
+        <div>
+            <span class="service-detail-fact-label">Durée estimée</span>
+            <strong class="service-detail-duration">⏱ {{ service.duration_minutes }} minutes</strong>
+        </div>
+    </div>
+
+    {% if service.full_description %}
+    <div class="card service-detail-section">
+        <h2>Description du Soin</h2>
+        <p>{{ service.full_description }}</p>
+    </div>
+    {% endif %}
+
+    {% if service.included_materials %}
+    <div class="card service-detail-section is-muted">
+        <h2>✨ Matériel &amp; Soins Inclus</h2>
+        <p>{{ service.included_materials }}</p>
+    </div>
+    {% endif %}
+
+    {% if service.client_must_bring %}
+    <div class="card service-detail-section is-muted">
+        <h2>🎒 Ce que vous devez apporter</h2>
+        <p>{{ service.client_must_bring }}</p>
+    </div>
+    {% endif %}
+
+    {% if service.preparation_instructions %}
+    <div class="card service-detail-section is-muted">
+        <h2>💡 Consignes de préparation</h2>
+        <p>{{ service.preparation_instructions }}</p>
+    </div>
+    {% endif %}
+
+    {% if service.cancellation_notes %}
+    <div class="card service-detail-section is-muted">
+        <h2>⚠️ Conditions particulières</h2>
+        <p>{{ service.cancellation_notes }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Sticky Bottom Mobile CTA for Booking -->
+<div class="sticky-bottom-cta">
+    <div class="sticky-bottom-content">
+        <div>
+            <div class="service-detail-cta-meta">{{ service.duration_minutes }} min</div>
+            <div class="service-detail-cta-price">{{ service.formatted_price }}</div>
+        </div>
+        <a href="{% url 'bookings:wizard' %}?service={{ service.id }}" class="btn btn-primary btn-lg">
+            Réserver ce soin ➔
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<section class="config-section" x-show="bookingSelection.clientTypeId" x-transition.opacity aria-labelledby="category-heading">
+    <p class="config-eyebrow">02 · Coiffure</p>
+    <h2 id="category-heading">Choisissez votre coiffure</h2>
+    <div class="config-category-grid">
+        <template x-for="item in categories" :key="item.id">
+            <button type="button" class="config-choice config-category" :class="bookingSelection.categoryId === item.id && 'is-selected'" :aria-pressed="bookingSelection.categoryId === item.id" @click="selectCategory(item.id)">
+                <img x-show="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy">
+                <span class="config-choice-content">
+                    <span class="config-choice-title"><strong x-text="item.name"></strong><span x-show="bookingSelection.categoryId === item.id" aria-hidden="true">✓</span></span>
+                    <span class="config-description" x-text="item.description"></span>
+                    <span class="config-choice-meta"><span x-text="item.priceType === 'consultation_required' ? 'Sur devis' : (item.priceType === 'starting_at' ? 'À partir de ' : '') + money(item.basePrice)"></span><span x-text="duration(item.baseDurationMinutes)"></span></span>
+                </span>
+            </button>
+        </template>
+    </div>
+    <p x-show="!categories.length" class="empty-state">Aucune coiffure disponible pour ce type de client pour le moment.</p>
+</section>

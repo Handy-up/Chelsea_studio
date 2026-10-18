@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Rendez-vous décliné</title></head>
+<body style="font-family: sans-serif; color: #1A1918; background-color: #FDFBF7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #C62828;">Bonjour {{ customer.first_name }},</h2>
+        <p>Malheureusement, Chelsea ne sera pas en mesure d'honorer votre demande de rendez-vous pour le service <strong>{{ service.name }}</strong> le {{ appointment.starts_at|date:"l d F Y à H:i" }}.</p>
+        {% if appointment.admin_note %}
+        <p><strong>Message de Chelsea :</strong> {{ appointment.admin_note }}</p>
+        {% endif %}
+        <p>Nous vous invitons à choisir une autre date ou un autre créneau directement sur le site.</p>
+    </div>
+</body>
+</html>

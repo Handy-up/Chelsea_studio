@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    {% page_header "Blocages" "Fermez une plage horaire ou une journée entière au planning." %}
+
+    <form method="post" class="card">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create">
+        <div class="form-group">
+            <label class="form-label" for="starts_at">Début</label>
+            <input class="form-input" type="datetime-local" id="starts_at" name="starts_at" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="ends_at">Fin</label>
+            <input class="form-input" type="datetime-local" id="ends_at" name="ends_at" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="reason">Motif</label>
+            <input class="form-input" type="text" id="reason" name="reason" placeholder="Congé, pause, déplacement...">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Bloquer la période</button>
+    </form>
+
+    <section class="card">
+        <h2 class="card-section-title">Périodes bloquées</h2>
+        {% for block in blocks %}
+            <div class="list-row">
+                <div class="list-row-body">
+                    <span class="row-title">{{ block.starts_at|date:"d/m/Y H:i" }} - {{ block.ends_at|date:"d/m/Y H:i" }}</span>
+                    <div class="row-meta">{{ block.reason|default:"Sans motif" }}</div>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="block_id" value="{{ block.id }}">
+                    <button class="btn btn-outline btn-remove" type="submit">Retirer</button>
+                </form>
+            </div>
+        {% empty %}
+            {% empty_state "Aucune période bloquée." %}
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

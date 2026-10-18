@@ -1,0 +1,8 @@
+{% load chelsea_ui %}
+<div class="list-row">
+    <div class="list-row-body">
+        {% if url %}<a class="row-title" href="{{ url }}">{{ title }}</a>{% else %}<span class="row-title">{{ title }}</span>{% endif %}
+        {% if meta %}<div class="row-meta">{{ meta }}</div>{% endif %}
+    </div>
+    {% if status %}{% status_badge status status_label %}{% endif %}
+</div>

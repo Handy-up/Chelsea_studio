@@ -1,0 +1,21 @@
+{% load chelsea_ui %}
+<div id="gallery-grid-container" class="gallery-grid">
+    {% for item in gallery_items %}
+        <div class="gallery-grid-card fade-in-up">
+            <div class="gallery-grid-card-media">
+                <img src="{{ item.get_image_url }}" alt="{{ item.alt_text|default:item.title }}" loading="lazy">
+                <span class="service-badge">{{ item.get_audience_display }}</span>
+            </div>
+            <div class="gallery-grid-card-body">
+                <h3>{{ item.title }}</h3>
+                {% if item.related_service %}
+                    <a href="{% url 'services:detail' item.related_service.slug %}" class="gallery-grid-card-link">{{ item.related_service.name }} →</a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="gallery-grid-empty">
+            {% empty_state "Aucune réalisation à afficher pour le moment." card=True %}
+        </div>
+    {% endfor %}
+</div>

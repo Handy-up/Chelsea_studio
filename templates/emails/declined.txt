@@ -1,0 +1,5 @@
+Bonjour {{ customer.first_name }},
+
+Votre demande de rendez-vous pour le {{ appointment.starts_at|date:"l d F Y à H:i" }} n'a pas pu être retenue.
+
+Nous vous invitons à sélectionner un autre créneau.

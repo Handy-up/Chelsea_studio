@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static chelsea_ui %}
+
+{% block content %}
+<div class="container home-shell">
+    <section class="home-hero fade-in-up" aria-labelledby="home-hero-title">
+        <picture>
+            <source srcset="{% static 'images/hero/chelsea-salon-banner.webp' %}" type="image/webp">
+            <img src="{% static 'images/hero/chelsea-salon-banner.jpg' %}" alt="Salon de coiffure élégant avec fauteuil, miroir et produits professionnels" width="1600" height="700" fetchpriority="high">
+        </picture>
+        <div class="home-hero-overlay" aria-hidden="true"></div>
+        <div class="home-hero-copy">
+            <h1 id="home-hero-title">Chelsea</h1>
+            <p>Coiffeuse privée &amp; styliste</p>
+        </div>
+    </section>
+
+    <nav class="bio-actions home-actions fade-in-up" aria-label="Accès rapides">
+        <a href="{% url 'bookings:wizard' %}" class="btn-bio">
+            <span class="home-link-copy">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                Prendre rendez-vous en ligne
+            </span>
+            <svg class="home-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+        <a href="{% url 'services:list' %}" class="btn-bio">
+            <span class="home-link-copy">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9"/><path d="m14 14 6 6"/></svg>
+                Découvrir les services et tarifs
+            </span>
+            <svg class="home-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+        <a href="{% url 'gallery:list' %}" class="btn-bio">
+            <span class="home-link-copy">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="10" r="1.5"/><path d="m21 15-4-4-5 5-2-2-5 5"/></svg>
+                Voir les réalisations et les avant/après
+            </span>
+            <svg class="home-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+        <a href="#horaires" class="btn-bio">
+            <span class="home-link-copy">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                Voir l'horaire
+            </span>
+            <svg class="home-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+    </nav>
+
+    <section class="home-section fade-in-up" aria-labelledby="featured-title">
+        <div class="section-heading">
+            <h2 id="featured-title">Services vedettes</h2>
+            <a href="{% url 'services:list' %}">Tout voir</a>
+        </div>
+
+        <div class="featured-service-list">
+            {% for service in featured_services %}
+                <article class="featured-service-card">
+                    <img src="{{ service.get_cover_image_url }}" alt="{{ service.name }}" loading="lazy">
+                    <div>
+                        <h3>{{ service.name }}</h3>
+                        <p>{{ service.duration_minutes }} min · <strong>{{ service.formatted_price }}</strong></p>
+                    </div>
+                    <a href="{% url 'bookings:wizard' %}?service={{ service.id }}" aria-label="Réserver {{ service.name }}">Réserver</a>
+                </article>
+            {% empty %}
+                {% empty_state "Aucun service vedette pour le moment." %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="home-section gallery-preview-section fade-in-up" aria-labelledby="gallery-title">
+        <div class="section-heading">
+            <div>
+                <h2 id="gallery-title">Réalisations récentes</h2>
+                <p>Coiffures, finitions et inspirations avant/après.</p>
+            </div>
+            <a href="{% url 'gallery:list' %}">Voir toute la galerie</a>
+        </div>
+
+        {% if recent_gallery %}
+            <div class="home-gallery-grid">
+                {% for item in recent_gallery %}
+                    <a href="{% url 'gallery:list' %}" class="home-gallery-card" aria-label="Ouvrir la galerie pour {{ item.title }}">
+                        <img src="{{ item.get_image_url }}" alt="{{ item.alt_text|default:item.title }}" loading="lazy">
+                        <span>{{ item.title }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% empty_state "La galerie sera affichée ici dès que Chelsea publiera ses premières réalisations." card=True %}
+        {% endif %}
+    </section>
+
+    <section id="horaires" class="home-section hours-section fade-in-up" aria-labelledby="hours-title">
+        <div class="hours-card">
+            <div class="hours-card-header">
+                <div>
+                    <h2 id="hours-title">Horaires du salon</h2>
+                    <p>Consultez les disponibilités à jour.</p>
+                </div>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+
+            {% if business_hours %}
+                <div class="hours-list">
+                    {% for bh in business_hours %}
+                        <div class="hours-row">
+                            <span>{{ bh.get_weekday_display }}</span>
+                            {% if bh.is_closed %}
+                                <strong>Fermé</strong>
+                            {% else %}
+                                <strong>{{ bh.opening_time|time:"H:i" }} - {{ bh.closing_time|time:"H:i" }}</strong>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {% empty_state "Aucun horaire n'est encore configuré." %}
+            {% endif %}
+
+            <div class="hours-footer">
+                <p><strong>Adresse :</strong> {{ site_settings.address }}</p>
+                <p><strong>Note :</strong> {{ site_settings.booking_notice }}</p>
+                <a href="{% url 'bookings:wizard' %}" class="btn btn-outline">Voir les disponibilités</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-section fade-in-up" aria-labelledby="social-title">
+        <h2 id="social-title">Suivez-moi</h2>
+        <div class="social-links home-social-links">
+            {% if site_settings.instagram_url %}
+                <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Ouvrir Instagram" title="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1"/></svg>
+                </a>
+            {% endif %}
+            {% if site_settings.tiktok_url %}
+                <a href="{{ site_settings.tiktok_url }}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Ouvrir TikTok" title="TikTok">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v11.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M14 5c1.3 3 3.4 4.8 6 5"/></svg>
+                </a>
+            {% endif %}
+            {% if site_settings.facebook_url %}
+                <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Ouvrir Facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 8h3V3h-3c-3 0-5 2-5 5v3H7v5h3v5h5v-5h3l1-5h-4z"/></svg>
+                </a>
+            {% endif %}
+            {% if site_settings.email %}
+                <a href="mailto:{{ site_settings.email }}" class="social-btn" aria-label="Envoyer un courriel" title="Courriel">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                </a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

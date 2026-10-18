@@ -1,0 +1,7 @@
+            <template x-if="group.inputType === 'boolean'">
+                <div class="config-chips">
+                    <template x-for="answer in [true, false]" :key="String(answer)">
+                        <button type="button" class="config-chip" :aria-pressed="bookingSelection.selectedOptions[group.id] === answer" :class="bookingSelection.selectedOptions[group.id] === answer && 'is-selected'" @click="selectOption(group, answer)"><span x-show="bookingSelection.selectedOptions[group.id] === answer" aria-hidden="true">✓</span><span x-text="answer ? 'Oui' : 'Non'"></span><small x-text="adjustmentLabel(group.values.find(v => v.value === String(answer)) || {priceAdjustment: 0, durationAdjustmentMinutes: 0})"></small></button>
+                    </template>
+                </div>
+            </template>

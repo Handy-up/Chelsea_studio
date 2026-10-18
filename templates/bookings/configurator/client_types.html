@@ -1,0 +1,13 @@
+<section class="config-section" aria-labelledby="client-type-heading">
+    <p class="config-eyebrow">01 · Pour qui ?</p>
+    <h2 id="client-type-heading">Pour qui est ce rendez-vous ?</h2>
+    <div class="config-chips" role="group" aria-labelledby="client-type-heading">
+        <template x-for="client in catalogue.clientTypes" :key="client.id">
+            <button type="button" class="config-chip" :class="bookingSelection.clientTypeId === client.id && 'is-selected'" :aria-pressed="bookingSelection.clientTypeId === client.id" @click="selectClientType(client.id)">
+                <span x-show="bookingSelection.clientTypeId === client.id" aria-hidden="true">✓</span>
+                <span x-text="client.name"></span>
+            </button>
+        </template>
+    </div>
+    <p x-show="!catalogue.clientTypes.length" class="empty-state">La réservation sera disponible dès que le salon aura publié ses types de clients.</p>
+</section>

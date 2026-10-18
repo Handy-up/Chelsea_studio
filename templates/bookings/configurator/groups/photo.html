@@ -1,0 +1,12 @@
+<template x-if="['photo', 'file'].includes(group.inputType)">
+    <div class="config-upload config-upload-card">
+        <input class="config-file-input" type="file" :id="'option-file-' + group.id" :name="'option_file_' + group.id" :aria-label="group.name" :aria-required="group.required" :accept="group.inputType === 'photo' ? 'image/jpeg,image/png,image/webp' : 'image/jpeg,image/png,image/webp,application/pdf'" @change="selectFile(group, $event)">
+        <label class="config-upload-target" :for="'option-file-' + group.id">
+            <img x-show="previews[group.id]" :src="previews[group.id] || ''" class="config-photo-preview" :alt="'Aperçu : ' + group.name">
+            <strong x-text="bookingSelection.selectedOptions[group.id] ? 'Remplacer' : (group.inputType === 'photo' ? '+ Ajouter une photo' : '+ Ajouter un fichier')"></strong>
+            <span class="config-description" x-text="bookingSelection.selectedOptions[group.id]?.name || group.name"></span>
+        </label>
+        <button type="button" class="config-text-button" x-show="bookingSelection.selectedOptions[group.id]" @click="removeFile(group)">Supprimer</button>
+        <small>JPEG, PNG, WebP<span x-show="group.inputType === 'file'"> ou PDF</span> · 5 Mo maximum.</small>
+    </div>
+</template>

@@ -1,0 +1,20 @@
+<div id="slots-container">
+    {% if error %}
+        <p class="field-error">{{ error }}</p>
+    {% elif slots %}
+        <label class="form-label">Sélectionnez votre heure :</label>
+        <div class="slots-grid">
+            {% for slot in slots %}
+                <button type="button"
+                        class="slot-btn" :class="selectedSlot === '{{ slot.starts_at_iso }}' ? 'selected' : ''" :aria-pressed="selectedSlot === '{{ slot.starts_at_iso }}'"
+                        @click="selectedSlot = '{{ slot.starts_at_iso }}'; selectedSlotFormatted = '{{ slot.formatted }}'">
+                    {{ slot.formatted }}
+                </button>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state empty-state-card">
+            Aucun créneau disponible à cette date. Merci de choisir une autre date.
+        </div>
+    {% endif %}
+</div>

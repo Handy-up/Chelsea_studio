@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+    {% include 'gestion/_nav.html' %}
+
+    <div class="card-header-row page-header-row">
+        <h1>Services</h1>
+        <a class="btn btn-outline btn-remove" href="{% url 'admin:services_service_add' %}">Ajouter</a>
+    </div>
+
+    <section class="card">
+        {% for service in services %}
+            <div class="list-row">
+                <div class="list-row-body">
+                    <a class="row-title" href="{% url 'admin:services_service_change' service.id %}">{{ service.name }}</a>
+                    <div class="row-meta">{{ service.category.name|default:"Sans catégorie" }} · {{ service.duration_minutes }} min · {{ service.formatted_price }}</div>
+                </div>
+                {% if service.is_active %}
+                    <span class="badge badge-confirmed">Actif</span>
+                {% else %}
+                    <span class="badge badge-cancelled">Inactif</span>
+                {% endif %}
+            </div>
+        {% empty %}
+            {% empty_state "Aucun service créé." %}
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

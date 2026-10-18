@@ -1,0 +1,11 @@
+<aside class="config-summary" x-show="!loading && step === 1" aria-label="Résumé du soin">
+    <p class="config-eyebrow">Votre soin</p>
+    <strong class="config-summary-name" x-text="summaryName"></strong>
+    <div class="config-summary-totals" aria-live="polite" aria-atomic="true">
+        <div><small>Prix estimé</small><strong class="config-price" x-text="complete ? selectedServicePrice : '—'"></strong></div>
+        <div><small>Durée estimée</small><strong x-text="complete ? duration(selectedServiceDuration) : '—'"></strong></div>
+    </div>
+    <p class="config-help" x-text="remaining" id="configuration-help"></p>
+    <button type="button" class="btn config-primary" x-show="!review" :disabled="!complete || busy" aria-describedby="configuration-help" @click="showReview()">Continuer <span aria-hidden="true">→</span></button>
+    <button type="button" class="btn config-primary" x-show="review" :disabled="!complete || busy" @click="confirmService()" x-text="busy ? 'Vérification…' : 'Choisir une date'"></button>
+</aside>

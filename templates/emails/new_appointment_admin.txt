@@ -1,0 +1,14 @@
+Chelsea, vous avez une nouvelle demande de rendez-vous !
+
+Client : {{ customer.full_name }} ({{ customer.phone }} - {{ customer.email }})
+Service : {{ service.name }}
+Date : {{ appointment.starts_at|date:"l d F Y à H:i" }}
+Durée : {{ appointment.configured_duration_minutes }} min
+
+Rendez-vous sur votre espace /gestion/ pour confirmer ou refuser ce rendez-vous.
+
+{% if appointment.configuration %}
+Pour qui : {{ appointment.configuration.clientTypeName }}
+{% if appointment.configuration.subcategoryName %}Style : {{ appointment.configuration.subcategoryName }}{% endif %}
+{% for option in appointment.configuration.options %}{{ option.group }} : {{ option.value }}
+{% endfor %}{% endif %}

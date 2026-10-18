@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load chelsea_ui %}
+
+{% block content %}
+<div class="container">
+
+    {% page_header "Nos Prestations" "Choisissez le soin idéal et réservez votre créneau" %}
+
+    <!-- Filter Tabs (HTMX Enabled with No-JS Fallback Links) -->
+    <div class="filter-tabs" role="tablist" aria-label="Filtrer les prestations">
+        <a href="{% url 'services:list' %}"
+           class="filter-tab {% if current_audience == 'all' %}active{% endif %}"
+           hx-get="{% url 'services:list' %}"
+           hx-target="#service-list-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'all' %}true{% else %}false{% endif %}">
+            Tous
+        </a>
+        <a href="{% url 'services:women' %}"
+           class="filter-tab {% if current_audience == 'women' %}active{% endif %}"
+           hx-get="{% url 'services:women' %}"
+           hx-target="#service-list-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'women' %}true{% else %}false{% endif %}">
+            Femmes
+        </a>
+        <a href="{% url 'services:men' %}"
+           class="filter-tab {% if current_audience == 'men' %}active{% endif %}"
+           hx-get="{% url 'services:men' %}"
+           hx-target="#service-list-container"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           role="tab" aria-selected="{% if current_audience == 'men' %}true{% else %}false{% endif %}">
+            Hommes
+        </a>
+    </div>
+
+    <!-- Service List Partial Container -->
+    {% include 'services/partials/service_list.html' %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center">
+
+    <div class="confirmation-icon">✓</div>
+
+    <h1 class="confirmation-title">Demande Envoyée !</h1>
+    <p class="confirmation-subtitle">Votre demande de rendez-vous a bien été transmise à Chelsea.</p>
+
+    <div class="card confirmation-card">
+        <h2>Détails de votre réservation</h2>
+
+        <p><strong>Référence :</strong> <span class="mono">{{ appointment.public_id }}</span></p>
+        <p><strong>Service :</strong> {{ appointment.service.name }}</p>
+        <p><strong>Client :</strong> {{ appointment.customer.full_name }}</p>
+        <p><strong>Date &amp; Heure :</strong> {{ appointment.starts_at|date:"l d F Y à H:i" }}</p>
+        <p><strong>Durée :</strong> {{ appointment.configured_duration_minutes }} minutes</p>
+        <p><strong>Tarif estimé :</strong> {{ appointment.quoted_price }} €</p>
+        {% include 'bookings/partials/configuration_details.html' %}
+        <p><strong>Statut :</strong> <span class="badge badge-pending">{{ appointment.get_status_display }}</span></p>
+    </div>
+
+    {% if appointment.service.preparation_instructions or appointment.service.client_must_bring %}
+    <div class="card confirmation-tips-card">
+        <h3>Conseils pour votre venue :</h3>
+        {% if appointment.service.preparation_instructions %}
+        <p>💡 {{ appointment.service.preparation_instructions }}</p>
+        {% endif %}
+        {% if appointment.service.client_must_bring %}
+        <p>🎒 {{ appointment.service.client_must_bring }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="confirmation-actions">
+        <a href="{% url 'core:home' %}" class="btn btn-outline">Retour à l'accueil</a>
+    </div>
+
+</div>
+{% endblock %}

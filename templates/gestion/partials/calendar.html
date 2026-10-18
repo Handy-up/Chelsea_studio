@@ -1,0 +1,67 @@
+{% load chelsea_ui %}
+<div id="gestion-calendar-container">
+    <div class="calendar">
+        <div class="calendar-header">
+            <span class="calendar-month-label">{{ calendar_month_label }}</span>
+            <div class="calendar-nav">
+                <button type="button" class="calendar-nav-btn"
+                        hx-get="{% url 'accounts:gestion_calendar_partial' %}"
+                        hx-vals='{"year": {{ prev_year }}, "month": {{ prev_month }}}'
+                        hx-target="#gestion-calendar-container"
+                        hx-swap="outerHTML"
+                        aria-label="Mois précédent">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button type="button" class="calendar-nav-btn"
+                        hx-get="{% url 'accounts:gestion_calendar_partial' %}"
+                        hx-vals='{"year": {{ next_year }}, "month": {{ next_month }}}'
+                        hx-target="#gestion-calendar-container"
+                        hx-swap="outerHTML"
+                        aria-label="Mois suivant">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="calendar-weekdays">
+            <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+        </div>
+
+        <div class="calendar-grid">
+            {% for week in calendar_weeks %}
+                {% for day in week %}
+                    {% if day.in_month %}
+                        <button type="button"
+                                class="calendar-day {% if day.status == 'available' %}is-available{% else %}is-unavailable{% endif %}{% if day.is_today %} is-today{% endif %}{% if selected_date == day.date %} is-selected{% endif %}"
+                                hx-get="{% url 'accounts:gestion_calendar_partial' %}"
+                                hx-vals='{"date": "{{ day.date|date:"Y-m-d" }}", "year": {{ calendar_year }}, "month": {{ calendar_month }}}'
+                                hx-target="#gestion-calendar-container"
+                                hx-swap="outerHTML"
+                                aria-label="{{ day.date|date:'l d F' }}">
+                            {{ day.day }}
+                            <span class="calendar-day-dot" aria-hidden="true"></span>
+                        </button>
+                    {% else %}
+                        <span class="calendar-day is-muted" aria-hidden="true">{{ day.day }}</span>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+        <div class="calendar-legend">
+            <span class="calendar-legend-item"><span class="calendar-legend-dot is-available"></span> Ouvert</span>
+            <span class="calendar-legend-item"><span class="calendar-legend-dot is-unavailable"></span> Fermé / bloqué</span>
+        </div>
+    </div>
+
+    {% if selected_date %}
+        <section class="card calendar-day-detail-card">
+            <h2 class="card-section-title">{{ selected_date|date:"l d F Y" }}</h2>
+            {% for row in day_rows %}
+                {% list_row title=row.title meta=row.meta url=row.url status=row.status status_label=row.status_label %}
+            {% empty %}
+                {% empty_state "Aucun rendez-vous sur cette date." %}
+            {% endfor %}
+        </section>
+    {% endif %}
+</div>

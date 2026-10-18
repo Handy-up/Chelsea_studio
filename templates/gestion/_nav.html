@@ -1,0 +1,15 @@
+<nav class="gestion-nav" aria-label="Navigation gestion">
+    <a href="{% url 'accounts:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Tableau</a>
+    <a href="{% url 'accounts:gestion_appointments' %}" class="{% if request.resolver_match.url_name == 'gestion_appointments' or request.resolver_match.url_name == 'gestion_appointment_detail' %}active{% endif %}">RDV</a>
+    <a href="{% url 'accounts:gestion_calendar' %}" class="{% if request.resolver_match.url_name == 'gestion_calendar' %}active{% endif %}">Calendrier</a>
+    <a href="{% url 'accounts:gestion_services' %}" class="{% if request.resolver_match.url_name == 'gestion_services' %}active{% endif %}">Services</a>
+    <a href="{% url 'accounts:gestion_gallery' %}" class="{% if request.resolver_match.url_name == 'gestion_gallery' %}active{% endif %}">Galerie</a>
+    <a href="{% url 'accounts:gestion_hours' %}" class="{% if request.resolver_match.url_name == 'gestion_hours' %}active{% endif %}">Horaires</a>
+    <a href="{% url 'accounts:gestion_blocks' %}" class="{% if request.resolver_match.url_name == 'gestion_blocks' %}active{% endif %}">Blocages</a>
+    <a href="{% url 'accounts:gestion_settings' %}" class="{% if request.resolver_match.url_name == 'gestion_settings' %}active{% endif %}">Profil</a>
+    <a href="{% url 'admin:index' %}">Admin</a>
+    <form method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sortir</button>
+    </form>
+</nav>

@@ -1,0 +1,9 @@
+<fieldset class="config-option-group">
+    <legend><span x-text="group.name"></span> <small x-text="group.required ? 'Requis' : 'Facultatif'"></small></legend>
+    <p class="config-description" x-show="group.description" x-text="group.description"></p>
+    {% include 'bookings/configurator/groups/single.html' %}
+    {% include 'bookings/configurator/groups/multi.html' %}
+    {% include 'bookings/configurator/groups/boolean.html' %}
+    {% include 'bookings/configurator/groups/text.html' %}
+    {% include 'bookings/configurator/groups/photo.html' %}
+</fieldset>
